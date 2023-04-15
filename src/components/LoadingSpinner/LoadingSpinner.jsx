@@ -5,9 +5,8 @@ const LoadingSpinner = () => {
   return (
     <div
       style={{
-        position: "absolute",
-        left: "50%",
-        transform: "translateX(-50%)",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
       <ColorRing

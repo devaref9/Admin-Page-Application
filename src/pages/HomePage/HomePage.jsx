@@ -46,7 +46,9 @@ const HomePage = () => {
 
   // If All UserCards is selected then Select/Deselect checkbox changes.
   useEffect(() => {
-    setIsChecked(users.length === selectedUsersId.length ? true : false);
+    setIsChecked(
+      users.length > 0 && users.length === selectedUsersId.length ? true : false
+    );
   }, [users, selectedUsersId]);
 
   useEffect(() => {

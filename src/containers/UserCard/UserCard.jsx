@@ -16,11 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckboxInput from "../../components/CheckboxInput/CheckboxInput";
 import { Link } from "react-router-dom";
 import { updateSingleUserSelected } from "../../features/users";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const UserCard = ({ user }) => {
   const selectedUsersId = useSelector((state) => state.users.selectedUsersId);
   const photos = useSelector((state) => state.photos.value);
-  const [userPhoto, setUserPhoto] = useState({});
+  const [userPhoto, setUserPhoto] = useState(null);
   const [isChecked, setIsChecked] = useState(false);
   const [isSelected, SetIsSelected] = useState(
     selectedUsersId.includes(user.id)
@@ -43,16 +45,12 @@ const UserCard = ({ user }) => {
   const darkmode = useSelector((state) => state.theme.darkmode);
   return (
     <UserCardStyle bg={!darkmode ? "#e3e3e3" : ""}>
-      <div>
-        <UserCardImg
-          src={
-            userPhoto && userPhoto.thumbnailUrl
-            // user.imgSrc.value && user.imgSrc.value.length > 0
-            //   ? process.env.PUBLIC_URL + user.imgSrc.value
-            //   : NoImg
-          }
-          alt="user"
-        />
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {userPhoto ? (
+          <UserCardImg src={userPhoto.thumbnailUrl} />
+        ) : (
+          <LoadingSpinner />
+        )}
       </div>
       <UserContent>
         <UserInfo>

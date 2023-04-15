@@ -5,10 +5,12 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { store } from "./app/store";
 import { fetchUsers } from "./features/users";
+import { fetchPhotos } from "./features/photos";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 store.dispatch(fetchUsers());
+store.dispatch(fetchPhotos());
 
 root.render(
   <React.StrictMode>
