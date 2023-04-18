@@ -7,7 +7,6 @@ import {
   UserContent,
   UserInfo,
 } from "./UserCard.style";
-import NoImg from "../../assets/images/no-image.png";
 import RedTag from "../../assets/svgs/red-tag.svg";
 import GreenTag from "../../assets/svgs/green-tag.svg";
 import { BiPencil } from "react-icons/bi";
@@ -16,7 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import CheckboxInput from "../../components/CheckboxInput/CheckboxInput";
 import { Link } from "react-router-dom";
 import { updateSingleUserSelected } from "../../features/users";
-import { LazyLoadComponent } from "react-lazy-load-image-component";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const UserCard = ({ user }) => {
@@ -38,19 +36,21 @@ const UserCard = ({ user }) => {
   }, [selectedUsersId, user]);
 
   useEffect(() => {
-    let [userPhoto] = photos.filter((photo) => photo.id === user.id);
-    setUserPhoto(userPhoto);
-  }, [photos, user.id]);
+    if (user.image && user.image.length > 0) {
+      setUserPhoto(user.image);
+    } else {
+      let [userPhoto] = photos.filter((photo) => photo.id === user.id);
+      userPhoto && setUserPhoto(userPhoto.thumbnailUrl);
+    }
+  }, [photos, user.id, user.image, user]);
 
   const darkmode = useSelector((state) => state.theme.darkmode);
+  // console.log("userId", user.id);
+  // console.log("user", user);
   return (
     <UserCardStyle bg={!darkmode ? "#e3e3e3" : ""}>
       <div style={{ display: "flex", justifyContent: "center" }}>
-        {userPhoto ? (
-          <UserCardImg src={userPhoto.thumbnailUrl} />
-        ) : (
-          <LoadingSpinner />
-        )}
+        {userPhoto ? <UserCardImg src={userPhoto} /> : <LoadingSpinner />}
       </div>
       <UserContent>
         <UserInfo>

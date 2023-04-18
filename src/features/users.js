@@ -13,6 +13,18 @@ export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   }
 });
 
+export const addNewUser = createAsyncThunk(
+  "users/addNewUser",
+  async (initialUser) => {
+    try {
+      const response = await axios.post(USERS_URL, initialUser);
+      return response.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "users",
   initialState: {
@@ -109,8 +121,13 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "failed";
-        console.log(action);
+        console.log("fetching failed!", action);
         // state.error = action.error.message;
+      })
+      .addCase(addNewUser.fulfilled, (state, action) => {
+        action.payload.id = Number(action.payload.id);
+        console.log("action.payload",action.payload);
+        state.value.push(action.payload);
       });
   },
 });

@@ -12,6 +12,7 @@ export const fetchPhotos = createAsyncThunk("photos/fetchPhotos", async () => {
   }
 });
 
+
 export const photosSlice = createSlice({
   name: "photos",
   initialState: {
@@ -33,7 +34,7 @@ export const photosSlice = createSlice({
         state.status = "failed";
         console.log(action);
         // state.error = action.error.message;
-      });
+      })
   },
 });
 
