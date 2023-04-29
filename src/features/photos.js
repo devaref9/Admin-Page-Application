@@ -12,7 +12,6 @@ export const fetchPhotos = createAsyncThunk("photos/fetchPhotos", async () => {
   }
 });
 
-
 export const photosSlice = createSlice({
   name: "photos",
   initialState: {
@@ -34,8 +33,10 @@ export const photosSlice = createSlice({
         state.status = "failed";
         console.log(action);
         // state.error = action.error.message;
-      })
+      });
   },
 });
-
+export const getPhotoById = (state, photoId) => {
+  return state.photos.value.find((photo) => photo.id === photoId);
+};
 export default photosSlice.reducer;

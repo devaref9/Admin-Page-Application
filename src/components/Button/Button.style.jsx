@@ -27,8 +27,4 @@ export const ButtonStyle = styled.button`
   &.circle svg {
     font-size: 10px;
   }
-
-  &:hover {
-    filter: brightness(1.2);
-  }
 `;

@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { updateSingleUserSelected } from "../../features/users";
 import {
   BottomButtons,
   TopButtons,
@@ -11,10 +15,7 @@ import RedTag from "../../assets/svgs/red-tag.svg";
 import GreenTag from "../../assets/svgs/green-tag.svg";
 import { BiPencil } from "react-icons/bi";
 import Button from "../../components/Button/Button";
-import { useDispatch, useSelector } from "react-redux";
 import CheckboxInput from "../../components/CheckboxInput/CheckboxInput";
-import { Link } from "react-router-dom";
-import { updateSingleUserSelected } from "../../features/users";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 
 const UserCard = ({ user }) => {
@@ -45,10 +46,23 @@ const UserCard = ({ user }) => {
   }, [photos, user.id, user.image, user]);
 
   const darkmode = useSelector((state) => state.theme.darkmode);
-  // console.log("userId", user.id);
-  // console.log("user", user);
+
   return (
-    <UserCardStyle bg={!darkmode ? "#e3e3e3" : ""}>
+    <UserCardStyle
+      as={motion.div}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 0.3,
+        ease: [0, 0.71, 0.2, 1.01],
+        scale: {
+          type: "spring",
+          stiffness: 85,
+          restDelta: 0.0007,
+        },
+      }}
+      bg={!darkmode ? "#e3e3e3" : ""}
+    >
       <div style={{ display: "flex", justifyContent: "center" }}>
         {userPhoto ? <UserCardImg src={userPhoto} /> : <LoadingSpinner />}
       </div>

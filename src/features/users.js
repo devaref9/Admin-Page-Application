@@ -25,6 +25,19 @@ export const addNewUser = createAsyncThunk(
   }
 );
 
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+  async (initialUser) => {
+    const { id } = initialUser;
+    try {
+      const response = await axios.put(`${USERS_URL}/${id}`, initialUser);
+      return response.data;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "users",
   initialState: {
@@ -124,10 +137,15 @@ export const userSlice = createSlice({
         console.log("fetching failed!", action);
         // state.error = action.error.message;
       })
-      .addCase(addNewUser.fulfilled, (state, action) => {
-        action.payload.id = Number(action.payload.id);
-        console.log("action.payload",action.payload);
-        state.value.push(action.payload);
+      .addCase(addNewUser.fulfilled, (state, { payload }) => {
+        state.value.push(payload);
+        console.log(payload);
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        payload.id = Number(payload.id);
+        const newUsers = state.value.filter((user) => user.id !== payload.id);
+        state.value = newUsers;
+        state.value.push(payload);
       });
   },
 });
@@ -139,5 +157,9 @@ export const {
   updateCheck,
   updateSelectedUsersId,
 } = userSlice.actions;
+
+export const getUserById = (state, userId) => {
+  return state.users.value.find((user) => user.id === userId);
+};
 
 export default userSlice.reducer;

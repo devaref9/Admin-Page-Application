@@ -100,22 +100,6 @@ const UserInformationDetails = ({ user, submitState, setNewUser }) => {
             </td>
           </tr>
           <tr>
-            <td>Address:</td>
-            <td>
-              {user.location.country +
-                ", " +
-                user.location.city +
-                ", " +
-                user.location.street.name}
-            </td>
-            <td>
-              <UserCheckButtons
-              // checked={addressChecked}
-              // setChecked={setAddressChecked}
-              />
-            </td>
-          </tr>
-          <tr>
             <td>Profile Pic:</td>
             <td>
               <UserProfilePic>

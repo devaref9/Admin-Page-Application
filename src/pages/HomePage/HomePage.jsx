@@ -19,6 +19,7 @@ import CheckboxInput from "../../components/CheckboxInput/CheckboxInput";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
+import { motion } from "framer-motion";
 
 const HomePage = () => {
   const users = useSelector((state) => state.users.value);
@@ -79,7 +80,12 @@ const HomePage = () => {
   }, [serachKey, users, selectedUsersId]);
 
   return (
-    <HomePageStyle>
+    <HomePageStyle
+      as={motion.div}
+      initial={{ opacity: 0}}
+      animate={{ opacity: 1}}
+      exit={{ opacity: 0 }}
+    >
       <Container>
         <SearchForm setSearchKey={setSearchKey} />
         <HoemPageSelectAndDelete>

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import UserInformationInputs from "../../containers/UserInformationInputs/UserInformationInputs";
-import { Container } from "../../globalStyles";
-import { AddPageButtons, AddPageStyle } from "./AddPage.style";
-import Button from "../../components/Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewUser, addUser } from "../../features/users";
+import { motion } from "framer-motion";
+import { Container } from "../../globalStyles";
+import { EditPageButtons, EditPageStyle } from "./EditPage.style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { motion } from "framer-motion";
+import UserInformationInputs from "../../containers/UserInformationInputs/UserInformationInputs";
+import Button from "../../components/Button/Button";
+import { getUserById, updateUser } from "../../features/users";
+import { getPhotoById } from "../../features/photos";
 import useFilePreview from "../../hooks/useFilePreview";
 
 const schema = yup
@@ -37,60 +38,50 @@ const schema = yup
   })
   .required();
 
-const AddPage = () => {
+const Editpage = () => {
+  const { userId } = useParams();
   const navigate = useNavigate();
-  const [fileDataURL, setFileDataURL] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => getUserById(state, Number(userId)));
+  const photo = useSelector((state) => getPhotoById(state, Number(userId)));
 
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const [addRequestStatus, setAddRequestStatus] = useState("idle");
-  const dispatch = useDispatch();
-
   let inputFile = watch(["image"]);
   const [filePreview] = useFilePreview(inputFile[0]);
 
   const onSubmit = async (data) => {
     try {
-      setAddRequestStatus("pending");
-      dispatch(addNewUser({ ...data }));
+      dispatch(updateUser({ id: userId, ...data }));
     } catch (err) {
       console.error("Failed to save!", err);
     } finally {
-      setAddRequestStatus("idle");
     }
     navigate("/");
   };
 
-  // const onSavePostCliked = (e) => {
-  //   e.preventDefault();
-  //   setSubmitCount((prev) => prev + 1);
-  //   try {
-  //     setAddRequestStatus("pending");
-  //     dispatch(addNewUser(newUser));
-  //   } catch (err) {
-  //     console.error("Failed to save!", err);
-  //   } finally {
-  //     setAddRequestStatus("idle");
-  //   }
-  //   navigate("/");
-  // };
-
-  // if user was existed set ExistedUser to use AddPage for editing user information
-  // useEffect(() => {
-  //   if (userId) {
-  //     setExistedUser(users.find((user) => user.id.value === userId));
-  //   } else setExistedUser(null);
-  // }, [userId, users]);
+  //TODO: useMemo ??? Work on optimization
+  useEffect(() => {
+    if (user) {
+      const { name, phone, email } = user;
+      let InitialValues = {};
+      InitialValues.name = name;
+      InitialValues.phone = phone;
+      InitialValues.email = email;
+      reset({ ...InitialValues });
+    }
+  }, [user, reset]);
 
   return (
-    <AddPageStyle
+    <EditPageStyle
       as={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -101,9 +92,10 @@ const AddPage = () => {
           <UserInformationInputs
             register={register}
             errors={errors}
-            imgSrc={filePreview}
+            userId={userId}
+            imgSrc={filePreview ? filePreview : photo && photo.url}
           />
-          <AddPageButtons>
+          <EditPageButtons>
             <Button
               onClick={(e) => {
                 e.preventDefault();
@@ -116,11 +108,11 @@ const AddPage = () => {
             <Button type="submit" className="primary">
               save
             </Button>
-          </AddPageButtons>
+          </EditPageButtons>
         </form>
       </Container>
-    </AddPageStyle>
+    </EditPageStyle>
   );
 };
 
-export default AddPage;
+export default Editpage;

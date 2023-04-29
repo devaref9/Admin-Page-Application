@@ -7,7 +7,7 @@ import {
 } from "./UserInformationInputs.style";
 import NoImg from "../../assets/images/no-image.png";
 
-const UserInformationInputs = ({ register, errors, filePreview }) => {
+const UserInformationInputs = ({ register, errors, imgSrc = null }) => {
   return (
     <UserInformationInputsStyle>
       <table>
@@ -22,7 +22,7 @@ const UserInformationInputs = ({ register, errors, filePreview }) => {
           <tr>
             <td>Email:</td>
             <td>
-              <input type="email" {...register("email")} />
+              <input type="k" {...register("email")} />
               <span style={{ color: "red" }}>{errors.email?.message}</span>
             </td>
           </tr>
@@ -38,20 +38,13 @@ const UserInformationInputs = ({ register, errors, filePreview }) => {
             </td>
           </tr>
           <tr>
-            <td>Address:</td>
-            <td>
-              <input type="text" {...register("address")} />
-              <span style={{ color: "red" }}>{errors.address?.message}</span>
-            </td>
-          </tr>
-          <tr>
             <td>Profile Pic:</td>
             <td>
               <UserProfileLabel htmlFor="image">
                 <UserProfilePic>
                   <img
                     htmlFor="photo-upload"
-                    src={filePreview ? filePreview : NoImg}
+                    src={imgSrc ? imgSrc : NoImg}
                     alt="preview"
                   />
                 </UserProfilePic>
@@ -60,7 +53,7 @@ const UserInformationInputs = ({ register, errors, filePreview }) => {
                   type="file"
                   {...register("image")}
                 />
-                <span style={{ color: "red" }}>{errors.file?.message}</span>
+                <span style={{ color: "red" }}>{errors.image?.message}</span>
               </UserProfileLabel>
             </td>
           </tr>
