@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "../../globalStyles";
-import SearchForm from "../../components/SearchForm/SearchForm";
 import UserList from "../../containers/UserList/UserList";
 import { ReactComponent as AddIcon } from "../../assets/svgs/add.svg";
-import TrashCan from "../../assets/svgs/trash-can.svg";
 import {
-  deleteSelectedUsers,
+  deleteUser,
+  getFilteredUsers,
   updateSelectedUsersId,
 } from "../../features/users";
 
 import {
   HoemPageSelectAndDelete,
-  HomePageBtn,
+  HomeContent,
+  HomePageAddBtn,
   HomePageStyle,
 } from "./HomePage.style";
 import Button from "../../components/Button/Button";
@@ -19,21 +19,23 @@ import CheckboxInput from "../../components/CheckboxInput/CheckboxInput";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
-import { motion } from "framer-motion";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { BsFillTrashFill } from "react-icons/bs";
 
 const HomePage = () => {
   const users = useSelector((state) => state.users.value);
+  const dispatch = useDispatch();
   const selectedUsersId = useSelector((state) => state.users.selectedUsersId);
   const userStatus = useSelector((state) => state.users.status);
-  const [serachKey, setSearchKey] = useState("");
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const dispatch = useDispatch();
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const filteredUsers = useSelector((state) => getFilteredUsers(state));
 
   const handleDeleteUsers = () => {
-    dispatch(deleteSelectedUsers());
-    setIsChecked(false);
+    selectedUsersId.forEach((id) => {
+      const currentUser = users.find((user) => user.id === id);
+      dispatch(deleteUser({ ...currentUser }));
+    });
   };
 
   const handleSelectAllUsers = () => {
@@ -56,54 +58,49 @@ const HomePage = () => {
     userStatus === "loading" ? setIsLoading(true) : setIsLoading(false);
   }, [userStatus]);
 
-  useEffect(() => {
-    const filterUsers = (key) => {
-      const filteredUsers = [];
-
-      users.forEach((user) => {
-        if (user.name.toLowerCase().includes(key.toLowerCase())) {
-          filteredUsers.push(user);
-        }
-      });
-      const unSelectedUsers = filteredUsers.filter((user) => {
-        return selectedUsersId.indexOf(user.id) === -1;
-      });
-      const selectedUsers = selectedUsersId
-        ? users.filter((user) => {
-            return selectedUsersId.indexOf(user.id) !== -1;
-          })
-        : [];
-
-      return [...selectedUsers, ...unSelectedUsers];
-    };
-    setFilteredUsers(filterUsers(serachKey));
-  }, [serachKey, users, selectedUsersId]);
-
   return (
-    <HomePageStyle
-      as={motion.div}
-      initial={{ opacity: 0}}
-      animate={{ opacity: 1}}
-      exit={{ opacity: 0 }}
-    >
-      <Container>
-        <SearchForm setSearchKey={setSearchKey} />
-        <HoemPageSelectAndDelete>
-          <img onClick={handleDeleteUsers} src={TrashCan} alt="delete" />
-          <CheckboxInput
-            isChecked={isChecked}
-            handleChange={handleSelectAllUsers}
-          />
-        </HoemPageSelectAndDelete>
-        {isLoading ? <LoadingSpinner /> : <UserList users={filteredUsers} />}
-        <Link to="/add">
-          <HomePageBtn>
-            <Button className="primary circle">
-              <AddIcon />
+    <HomePageStyle>
+      <Sidebar />
+      <HomeContent>
+        <Container>
+          <HoemPageSelectAndDelete>
+            <Button className="danger" onClick={handleDeleteUsers}>
+              <BsFillTrashFill />
+              <span style={{ marginLeft: "5px" }}>Delete Selected</span>
             </Button>
-          </HomePageBtn>
-        </Link>
-      </Container>
+            <Button className="primary">
+              <CheckboxInput
+                id="selectAll"
+                handleChange={handleSelectAllUsers}
+                isChecked={isChecked}
+              />
+              <label
+                htmlFor="selectAll"
+                style={{ marginLeft: "5px", cursor: "pointer" }}
+              >
+                Select All
+              </label>
+            </Button>
+          </HoemPageSelectAndDelete>
+          {isLoading ? <LoadingSpinner /> : <UserList users={filteredUsers} />}
+        </Container>
+      </HomeContent>
+      <Link to="/add">
+        <HomePageAddBtn>
+          <Button
+            style={{
+              width: "60px",
+              height: "60px",
+              backgroundColor: "#9BA4B5",
+              boxShadow: "0px 17px 10px -10px rgba(0, 0, 0, 0.4)",
+              transition: "all ease-in-out 300ms",
+            }}
+            className="circle"
+          >
+            <AddIcon />
+          </Button>
+        </HomePageAddBtn>
+      </Link>
     </HomePageStyle>
   );
 };

@@ -30,7 +30,7 @@ const schema = yup
       ),
     image: yup
       .mixed()
-      .test("required", "Image is a required field.", (file) => {
+      .test("required", "required field.", (file) => {
         // return file && file.size <-- u can use this if you don't want to allow empty files to be uploaded;
         if (file.length > 0) return true;
         return false;
@@ -103,10 +103,10 @@ const Editpage = () => {
               }}
               className="danger"
             >
-              back
+              Discard
             </Button>
             <Button type="submit" className="primary">
-              save
+              Save Changes
             </Button>
           </EditPageButtons>
         </form>

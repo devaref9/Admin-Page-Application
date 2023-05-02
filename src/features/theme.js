@@ -4,11 +4,12 @@ const initialState = {
   colors: {
     dark: "#e3e3e3",
     white: "#ffffff",
-    body: "#F1F1F1",
-    text: "#747474",
-    primary: "#57EFDD",
-    primaryLight: "#6eebe736",
-    danger: "#FF5050",
+    body: "#F1F6F9",
+    text: "#393646",
+    primary: "#394867",
+    primaryLight: "#9BA4B5",
+    primaryDark: "#212A3E",
+    danger: "#ED2B2A",
   },
   darkmode: false,
 };

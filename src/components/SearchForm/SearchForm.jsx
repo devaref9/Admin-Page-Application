@@ -1,28 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { ReactComponent as SearchIcon } from "../../assets/svgs/search.svg";
 import { SearchFormStyle, SearchIconWrapper } from "./SearchForm.style";
-import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilteredUsers } from "../../features/users";
+import { useEffect } from "react";
 
-const SearchForm = ({ setSearchKey }) => {
+const SearchForm = () => {
+  const users = useSelector((state) => state.users.value);
+  const [searchKey, setSearchKey] = useState("");
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setSearchKey(e.target.value);
   };
+
+  useEffect(() => {
+    dispatch(setFilteredUsers({ searchKey: searchKey }));
+  }, [searchKey, dispatch, users]);
+
   return (
-    <SearchFormStyle
-      as={motion.form}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 0.3,
-        ease: [0, 0.71, 0.2, 1.01],
-        scale: {
-          type: "spring",
-          stiffness: 85,
-          restDelta: 0.0007,
-        },
-      }}
-    >
-      <input onChange={handleChange} type="text" placeholder="جستجوی نام فرد" />
+    <SearchFormStyle>
+      <input onChange={handleChange} type="text" placeholder="Search user" />
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>

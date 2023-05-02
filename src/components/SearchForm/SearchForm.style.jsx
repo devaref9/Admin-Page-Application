@@ -7,14 +7,13 @@ export const SearchFormStyle = styled.form`
   overflow: hidden;
 
   & > input {
-    padding: 16px 56px;
+    padding: 16px 24px;
     font-size: 14px;
     line-height: 16px;
     font-family: "Iran Sans";
     font-weight: 600;
     letter-spacing: 1px;
     width: 100%;
-    text-align: right;
     color: #5f5f5f;
   }
 

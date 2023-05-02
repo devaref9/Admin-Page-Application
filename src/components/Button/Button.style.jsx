@@ -1,12 +1,15 @@
 import styled from "styled-components";
 
 export const ButtonStyle = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 12px;
   font-weight: 700;
-  padding: 4px 24px;
-  border-radius: 5px;
+  padding: 10px 14px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.colors.white};
   transition: var(--transition);
 
@@ -22,9 +25,5 @@ export const ButtonStyle = styled.button`
     padding: 12px;
     border-radius: 50%;
     display: flex;
-  }
-
-  &.circle svg {
-    font-size: 10px;
   }
 `;

@@ -16,21 +16,25 @@ const GlobalStyle = createGlobalStyle`
   font-family: 'Roboto', sans-serif;
 }
 
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
 body {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 12px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 14px;
     background-color : ${({ theme }) => theme.colors.body};
     color: ${({ theme }) => theme.colors.text}
   }
 `;
 
 export const Container = styled.div`
-  max-width: 333px;
+  max-width: 85%;
   margin-right: auto;
   margin-left: auto;
   /* padding: 0 8.5px; */
-  /* @media screen and (max-width: 960px) {
+  /* @media screen and (max-width: 992px) {
     padding: 0 30px;
   } */
 `;

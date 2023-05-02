@@ -1,6 +1,7 @@
 import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 // import { userData } from "../FakeData";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
 const USERS_URL = "https://jsonplaceholder.typicode.com/users";
 
@@ -38,11 +39,26 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (initialUser) => {
+    const { id } = initialUser;
+    try {
+      const response = await axios.delete(`${USERS_URL}/${id}`);
+      if (response?.status === 200) return initialUser;
+      return response?.status;
+    } catch (err) {
+      return err.message;
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "users",
   initialState: {
     value: [],
     selectedUsersId: [],
+    filteredUsers: [],
     status: "idle", // 'idle' Or 'Loading' Or 'Succeeded' Or 'Failed'
     error: null,
   },
@@ -64,11 +80,6 @@ export const userSlice = createSlice({
         }
         state.value = [action.payload, ...state.value];
       }
-    },
-
-    deleteSelectedUsers: (state, action) => {
-      const newState = state.value.filter((user) => !user.isSelected);
-      state.value = newState;
     },
 
     updateSingleUserSelected: (state, { payload }) => {
@@ -105,22 +116,43 @@ export const userSlice = createSlice({
       }
     },
 
-    updateCheck: (state, action) => {
+    // updateCheck: (state, action) => {
+    //   state.value.forEach((user) => {
+    //     if (user.id.value === action.payload.id.value) {
+    //       let allChecked = true;
+    //       for (let item in action.payload) {
+    //         if (
+    //           action.payload[item].isChecked !== undefined &&
+    //           !action.payload[item].isChecked
+    //         ) {
+    //           allChecked = false;
+    //           break;
+    //         }
+    //       }
+    //       user.isChecked = allChecked;
+    //     }
+    //   });
+    // },
+
+    setFilteredUsers: (state, { payload }) => {
+      const { searchKey } = payload;
+      const currentUsers = [];
+
       state.value.forEach((user) => {
-        if (user.id.value === action.payload.id.value) {
-          let allChecked = true;
-          for (let item in action.payload) {
-            if (
-              action.payload[item].isChecked !== undefined &&
-              !action.payload[item].isChecked
-            ) {
-              allChecked = false;
-              break;
-            }
-          }
-          user.isChecked = allChecked;
+        if (user.name.toLowerCase().includes(searchKey.toLowerCase())) {
+          currentUsers.push(user);
         }
       });
+      const unSelectedUsers = currentUsers.filter((user) => {
+        return state.selectedUsersId.indexOf(user.id) === -1;
+      });
+      const selectedUsers = state.selectedUsersId
+        ? state.value.filter((user) => {
+            return state.selectedUsersId.indexOf(user.id) !== -1;
+          })
+        : [];
+
+      state.filteredUsers = [...selectedUsers, ...unSelectedUsers];
     },
   },
   extraReducers: (builder) => {
@@ -131,6 +163,7 @@ export const userSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, { payload }) => {
         state.status = "succeeded";
         state.value = payload;
+        state.filteredUsers = state.value;
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.status = "failed";
@@ -139,27 +172,39 @@ export const userSlice = createSlice({
       })
       .addCase(addNewUser.fulfilled, (state, { payload }) => {
         state.value.push(payload);
-        console.log(payload);
       })
       .addCase(updateUser.fulfilled, (state, { payload }) => {
         payload.id = Number(payload.id);
         const newUsers = state.value.filter((user) => user.id !== payload.id);
         state.value = newUsers;
-        state.value.push(payload);
+        state.value = [...newUsers, payload];
+      })
+      .addCase(deleteUser.fulfilled, (state, { payload }) => {
+        payload.id = Number(payload.id);
+        const newUsers = state.value.filter((user) => user.id !== payload.id);
+        const newSelectedUsersId = state.selectedUsersId.filter(
+          (id) => id !== payload.id
+        );
+        state.selectedUsersId = newSelectedUsersId;
+        state.value = newUsers;
       });
   },
 });
 
 export const {
   addUser,
-  deleteSelectedUsers,
   updateSingleUserSelected,
   updateCheck,
   updateSelectedUsersId,
+  setFilteredUsers,
 } = userSlice.actions;
 
 export const getUserById = (state, userId) => {
   return state.users.value.find((user) => user.id === userId);
+};
+
+export const getFilteredUsers = (state) => {
+  return state.users.filteredUsers;
 };
 
 export default userSlice.reducer;

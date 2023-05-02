@@ -2,58 +2,21 @@ import styled from "styled-components";
 import CameraIcon from "../../assets/svgs/Camera 2.svg";
 
 export const UserInformationInputsStyle = styled.div`
-  & tr {
-    width: 100%;
-  }
-
-  & tr:not(:first-of-type) td {
-    padding-top: 12px;
-  }
-
-  & tr:last-of-type td {
-    padding-top: 45px;
-  }
-
-  & tr:last-of-type td:first-of-type {
-    display: block;
-  }
-
-  & tr td:last-of-type {
-    width: 100%;
-  }
-
-  & tr td:first-of-type {
-    white-space: nowrap;
-    padding-right: 16px;
-  }
-
-  & input {
-    width: 100%;
-    text-align: right;
-    color: #5f5f5f;
-    padding: 6px 18px;
-    border-radius: var(--borderRadius);
-  }
-
-  & .PhoneInputCountry {
-    display: none;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const UserProfilePic = styled.div`
   position: relative;
-  width: 100px;
-  height: 130px;
-  border: 1px solid ${({ theme }) => theme.colors.primary};
-  background-color: ${({ theme }) => theme.colors.white};
   cursor: pointer;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
-  border-radius: 0px 0px 5px 5px;
 
   & > img {
+    width: 120px;
+    height: 120px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
     vertical-align: middle;
-    width: 100%;
-    height: 100%;
+    border-radius: 45%;
   }
 
   &::before {
@@ -65,10 +28,11 @@ export const UserProfilePic = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     content: url("${CameraIcon}");
-    background-color: ${({ theme }) => theme.colors.primaryLight};
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 4px solid white;
+    border-radius: 45%;
   }
 `;
 
@@ -77,5 +41,23 @@ export const UserProfileInput = styled.input`
 `;
 
 export const UserProfileLabel = styled.label`
+  position: relative;
   display: inline-block;
+  margin-bottom: 35px;
+`;
+
+export const UserInputFields = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 42px;
+`;
+
+export const UserProfileError = styled.span`
+  position: absolute;
+  width: 100%;
+  bottom: -20px;
+  text-align: center;
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.danger};
 `;
