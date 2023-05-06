@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { store } from "./app/store";
-import { fetchUsers } from "./features/users";
+import { store } from "./store";
+import { fetchUsers } from "./features/users/usersSlice";
 import { fetchPhotos } from "./features/photos";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

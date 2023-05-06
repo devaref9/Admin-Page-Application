@@ -2,8 +2,7 @@ import { useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./globalStyles";
 import GlobalFont from "./fonts/fonts";
-import ScrollToTop from "./utils/ScrollToTop";
-import AnimatedRoutes from "./containers/AnimatedRoutes/AnimatedRoutes";
+import AnimatedRoutes from "./AnimatedRoutes";
 
 function App() {
   const theme = useSelector((state) => state.theme);
@@ -13,7 +12,6 @@ function App() {
       <>
         <GlobalFont />
         <GlobalStyle />
-        <ScrollToTop />
         <AnimatedRoutes />
       </>
     </ThemeProvider>

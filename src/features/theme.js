@@ -11,6 +11,7 @@ const initialState = {
     primaryDark: "#212A3E",
     danger: "#ED2B2A",
   },
+  media: { small: "645px", large: "992px" },
   darkmode: false,
 };
 

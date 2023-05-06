@@ -1,6 +1,5 @@
 import React from "react";
 import { CheckboxInputStyle } from "./CheckboxInput.style";
-import Button from "../Button/Button";
 
 const CheckboxInput = ({
   name = "",
