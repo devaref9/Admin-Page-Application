@@ -7,7 +7,6 @@ export const HomePageStyle = styled.div`
 export const Content = styled.div`
   padding: 75px 0 30px 0;
   margin-left: 25vw;
-  width: 75vw;
   position: relative;
 
   @media (max-width: ${({theme}) => theme.media.large}) {
