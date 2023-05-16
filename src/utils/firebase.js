@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDp6QvL1txCZkPiCDE7UgYh5DVvwlKngvs",
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
 
   authDomain: "admin-panel-c664e.firebaseapp.com",
 
