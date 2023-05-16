@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDp6QvL1txCZkPiCDE7UgYh5DVvwlKngvs",
+  apiKey: process.env.REACT_APP_FIREBASE_KEY,
 
   authDomain: "admin-panel-c664e.firebaseapp.com",
 
@@ -10,9 +10,9 @@ const firebaseConfig = {
 
   storageBucket: "admin-panel-c664e.appspot.com",
 
-  messagingSenderId: "1:954052223612:web:45a05fa2ad6e3d012e5ff9",
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 
-  appId: "954052223612",
+  appId: process.env.REACT_APP_ID,
 };
 
 // Initialize Firebase
