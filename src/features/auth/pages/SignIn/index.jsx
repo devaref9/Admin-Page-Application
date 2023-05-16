@@ -49,8 +49,6 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
-  console.log(errors);
-
   const onSubmit = async (data) => {
     setLoading(true);
     try {
