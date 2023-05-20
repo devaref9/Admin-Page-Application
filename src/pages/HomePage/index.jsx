@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container } from "../../globalStyles";
+import { Container } from "../../assets/globalStyles";
 import UserList from "../../features/users/components/UserList/index.jsx";
 import { ReactComponent as AddIcon } from "../../assets/svgs/add.svg";
 

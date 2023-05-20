@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import Layout from "./Layout.jsx";
+import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/HomePage/index.jsx";
 import AddPage from "./pages/AddPage/index.jsx";
 import EditPage from "./pages/EditPage/index.jsx";
@@ -14,7 +14,6 @@ const AnimatedRoutes = () => {
 
   const { state } = useContext(AuthContext);
   const currentUser = state.currentUser;
-
 
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/signin" />;

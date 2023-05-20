@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { ThemeProvider } from "styled-components";
-import GlobalStyle from "./globalStyles";
-import GlobalFont from "./fonts/fonts";
+import GlobalStyle from "./assets/globalStyles";
+import GlobalFont from "./assets/fonts/fonts";
 import AnimatedRoutes from "./AnimatedRoutes";
 import { AuthProvider } from "./features/auth/authContext";
 
