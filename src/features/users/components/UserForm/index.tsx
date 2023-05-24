@@ -3,12 +3,13 @@ import Button from "../../../../components/Button/Button";
 import UserInputsList from "../UserInputsList/index";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewUser, getUserById, updateUser } from "../../usersSlice";
+import { User, addNewUser, getUserById, updateUser } from "../../usersSlice";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useFilePreview from "../../hooks/useFilePreview";
 import { ButtonsWrapper } from "./index.style";
 import { schema } from "../../hooks/useValidation";
+import { AppDispatch, RootState } from "../../../../store";
 
 const UserForm = () => {
   const navigate = useNavigate();
@@ -24,12 +25,14 @@ const UserForm = () => {
   });
 
   const { userId } = useParams();
-  const user = useSelector((state) => getUserById(state, Number(userId)));
+  const user = useSelector((state: RootState) =>
+    getUserById(state, Number(userId))
+  );
 
   const resetForm = useCallback(() => {
     if (user) {
       const { name, phone, email } = user;
-      let InitialValues = {};
+      let InitialValues: Partial<User> = {};
       InitialValues.name = name;
       InitialValues.phone = phone;
       InitialValues.email = email;
@@ -42,12 +45,12 @@ const UserForm = () => {
   }, [resetForm]);
 
   const [addRequestStatus, setAddRequestStatus] = useState("idle");
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   let inputFile = watch(["image"]);
   const [filePreview] = useFilePreview(inputFile[0]);
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     try {
       if (user) {
         dispatch(updateUser({ id: userId, ...data }));

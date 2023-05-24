@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const EditPageStyle = styled.div`
-  background-color: ${({ bg }) => bg};
+  background-color: ${({ theme }) => theme.colors.bg};
   min-height: 100vh;
 
   & form {

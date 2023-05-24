@@ -3,17 +3,22 @@ import Button from "../../../../components/Button/Button";
 import CheckboxInput from "../../../../components/CheckboxInput/CheckboxInput";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSelectedUsersId } from "../../usersSlice";
+import { AppDispatch, RootState } from "../../../../store";
 
 const AllUsersCheckbox = () => {
-  const users = useSelector((state) => state.users.value);
-  const selectedUsersId = useSelector((state) => state.users.selectedUsersId);
-  const dispatch = useDispatch();
-  const [isChecked, setIsChecked] = useState(false);
+  const users = useSelector((state: RootState) => state.users.value);
+  const selectedUsersId = useSelector(
+    (state: RootState) => state.users.selectedUsersId
+  );
+  const dispatch: AppDispatch = useDispatch();
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   // If All UserCards is selected then Select/Deselect checkbox changes.
   useEffect(() => {
     setIsChecked(
-      users.length > 0 && users.length === selectedUsersId.length ? true : false
+      selectedUsersId && users?.length === selectedUsersId.length
+        ? true
+        : false
     );
   }, [users, selectedUsersId]);
 

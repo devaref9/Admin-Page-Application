@@ -28,7 +28,7 @@ export const Content = styled.div`
   flex-direction: column;
   gap: 10px;
   align-items: center;
-  background-color: ${({ bg }) => bg};
+  background-color: #FCFFE7;
   border-radius: var(--borderRadius);
 `;
 

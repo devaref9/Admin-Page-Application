@@ -1,21 +1,23 @@
-import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
-import HomePage from "./pages/HomePage/index.jsx";
-import AddPage from "./pages/AddPage/index.jsx";
-import EditPage from "./pages/EditPage/index.jsx";
+import HomePage from "./pages/HomePage";
+import AddPage from "./pages/AddPage/index";
+import EditPage from "./pages/EditPage/index";
 import { AnimatePresence } from "framer-motion";
-import SignIn from "./features/auth/pages/SignIn/index.jsx";
+import SignIn from "./features/auth/pages/SignIn/index";
 import { useContext } from "react";
-import { AuthContext } from "./features/auth/authContext.js";
+import { AuthContext } from "./features/auth/authContext";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
 
   const { state } = useContext(AuthContext);
-  const currentUser = state.currentUser;
+  let currentUser = state.currentUser;
 
-  const RequireAuth = ({ children }) => {
+  type RequiredAuthType = {
+    children: JSX.Element;
+  };
+  const RequireAuth = ({ children }: RequiredAuthType): JSX.Element => {
     return currentUser ? children : <Navigate to="/signin" />;
   };
   return (

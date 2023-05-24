@@ -12,15 +12,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../../utils/firebase";
 import { useForm } from "react-hook-form";
 import { schema } from "../../hooks/useValidation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
 import { AuthContext } from "../../authContext";
-import { useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CircularProgress } from "@mui/material";
@@ -37,9 +36,9 @@ const ERROR_MESSAGE = {
 const SignIn = () => {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const { dispatch } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const {
     register,
@@ -49,14 +48,14 @@ const SignIn = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
     try {
       signInWithEmailAndPassword(auth, data.adminEmail, data.adminPassword)
         .then((userCredential) => {
           setLoading(false);
           const user = userCredential.user;
-          dispatch({ type: "LOGIN", payload: user });
+          login(user);
           navigate("/");
         })
         .catch((error) => {
@@ -67,11 +66,11 @@ const SignIn = () => {
           } else {
             message = "Email and Password are Wrong!";
           }
+          console.log(message);
           toast.error(message, {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
-            closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
@@ -102,7 +101,7 @@ const SignIn = () => {
             Sign in
           </Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Box noValidate sx={{ mt: 1 }}>
+            <Box sx={{ mt: 1 }}>
               <Box sx={{ position: "relative", mb: 1 }}>
                 <TextField
                   margin="normal"
@@ -110,29 +109,31 @@ const SignIn = () => {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  name="email"
                   autoComplete="email"
                   autoFocus
                   {...register("adminEmail")}
                   placeholder="Enter admin@test.com"
                 />
-                <Typography
-                  sx={{
-                    position: "absolute",
-                    bottom: "-15px",
-                    fontSize: "12px",
-                  }}
-                  variant="subtitle2"
-                  color="error"
-                >
-                  {errors.adminEmail?.message}
-                </Typography>
+                {errors.adminEmail ? (
+                  <Typography
+                    sx={{
+                      position: "absolute",
+                      bottom: "-15px",
+                      fontSize: "12px",
+                    }}
+                    variant="subtitle2"
+                    color="error"
+                  >
+                    <>{errors.adminEmail?.message}</>
+                  </Typography>
+                ) : (
+                  ""
+                )}
               </Box>
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
                 label="Password"
                 type="password"
                 id="password"
@@ -141,7 +142,6 @@ const SignIn = () => {
                 placeholder="Enter 123456"
               />
               <FormControlLabel
-                sx={{ mt: 0.5 }}
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
@@ -176,18 +176,6 @@ const SignIn = () => {
           </form>
         </Box>
       </Container>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <ToastContainer />
     </ThemeProvider>
   );

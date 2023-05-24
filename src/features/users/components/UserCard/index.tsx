@@ -12,39 +12,46 @@ import {
 } from "./index.style";
 import { BsPencilSquare } from "react-icons/bs";
 import CheckboxInput from "../../../../components/CheckboxInput/CheckboxInput";
+import { AppDispatch, RootState } from "../../../../store";
 
-const UserCard = ({ user }) => {
-  const selectedUsersId = useSelector((state) => state.users.selectedUsersId);
-  const photos = useSelector((state) => state.photos.value);
-  const [userPhoto, setUserPhoto] = useState(null);
-  const [isSelected, SetIsSelected] = useState(
-    selectedUsersId.includes(user.id)
+type UserCardPropTypes = {
+  user: any;
+};
+
+const UserCard = ({ user }: UserCardPropTypes) => {
+  const selectedUsersId = useSelector(
+    (state: RootState) => state.users.selectedUsersId
   );
-  const dispatch = useDispatch();
+  const photos = useSelector((state: RootState) => state.photos.value);
+  const [userPhoto, setUserPhoto] = useState(null);
+  const [isSelected, SetIsSelected] = useState<boolean>(
+    selectedUsersId ? selectedUsersId.includes(user.id) : false
+  );
+  const dispatch: AppDispatch = useDispatch();
 
   const handleSelect = () => {
-    dispatch(updateSingleUserSelected({ id: user.id }));
+    dispatch(updateSingleUserSelected({id: user.id}));
   };
 
   useEffect(() => {
-    SetIsSelected(selectedUsersId.includes(user.id));
+    SetIsSelected(selectedUsersId ? selectedUsersId.includes(user.id) : false);
   }, [selectedUsersId, user]);
 
   useEffect(() => {
     if (user.image && user.image.length > 0) {
       setUserPhoto(user.image);
     } else {
-      let [userPhoto] = photos.filter((photo) => photo.id === user.id);
-      userPhoto && setUserPhoto(userPhoto.thumbnailUrl);
+      let [userPhoto]: any = photos.filter(
+        (photo: any) => photo?.id === user.id
+      );
+      userPhoto && setUserPhoto(userPhoto?.thumbnailUrl);
     }
   }, [photos, user.id, user.image, user]);
 
-  const darkmode = useSelector((state) => state.theme.darkmode);
-
   return (
     <UserCardStyle>
-      <Content bg={!darkmode ? "#FCFFE7" : ""}>
-        <UserImg src={userPhoto} />
+      <Content>
+        <UserImg src={userPhoto ? userPhoto : ""} />
         <UserTitle>{user.name}</UserTitle>
         <UserEmail>{user.email}</UserEmail>
       </Content>

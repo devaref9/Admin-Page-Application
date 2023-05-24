@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container } from "../../assets/globalStyles";
-import UserList from "../../features/users/components/UserList/index.jsx";
+import UserList from "../../features/users/components/UserList/index";
 import { ReactComponent as AddIcon } from "../../assets/svgs/add.svg";
 
 import {
@@ -19,7 +19,7 @@ import AllUsersCheckbox from "../../features/users/components/AllUsersCheckbox";
 import DeleteSelectedUsers from "../../features/users/components/DeleteSelectedUsers";
 
 const HomePage = () => {
-  const userStatus = useSelector((state) => state.users.status);
+  const userStatus = useSelector((state: any) => state.users.status);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const HomePage = () => {
 
   return (
     <HomePageStyle>
-      <SidebarStyle bg="#212A3E">
+      <SidebarStyle>
         <SearchForm />
       </SidebarStyle>
       <Content>

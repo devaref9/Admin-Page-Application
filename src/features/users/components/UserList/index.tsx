@@ -2,14 +2,17 @@ import React from "react";
 import UserCard from "../UserCard";
 import { UserListStyle } from "./index.style";
 import { useSelector } from "react-redux";
-import { getFilteredUsers } from "../../usersSlice";
+import { User, getFilteredUsers } from "../../usersSlice";
+import { RootState } from "../../../../store";
 
 const UserList = () => {
-  const users = useSelector((state) => getFilteredUsers(state));
+  const users: User[] | null = useSelector((state: RootState) =>
+    getFilteredUsers(state)
+  );
 
   return (
     <UserListStyle>
-      {users.map((user, index) => {
+      {users?.map((user, index) => {
         return <UserCard user={user} key={index} />;
       })}
     </UserListStyle>

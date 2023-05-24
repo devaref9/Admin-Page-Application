@@ -1,4 +1,3 @@
-import React from "react";
 import { AddPageStyle } from "./index.style";
 import UserForm from "../../features/users/components/UserForm";
 
