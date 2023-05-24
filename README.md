@@ -1,16 +1,17 @@
 # Admin Page Application
-
 > **Live** **Demo** https://admin-page-application.vercel.app/
 
 ## :wrench: Technologies Used
 
 - React
+- TypeScript
 - Redux Toolkit
 - Redux Thunk
 - Styled-Components
 - Axios
 - React-hook-form and yup
 - React Router
+- Firebase
 
 ## :rocket: Setup
 
